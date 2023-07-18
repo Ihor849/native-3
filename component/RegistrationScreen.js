@@ -38,7 +38,37 @@ const RegistrationScreen = () => {
         </Text> */}
         <View>
         <KeyboardAvoidingView style={styles.inputs} behavior={Platform.OS == "ios" ? "padding" : "height" } >
-            
+        <TextInput
+        style={styles.input}
+        name = 'login'
+        // value={login}
+        // onChangeText = {validateName}
+        placeholder="Логін"
+        placeholderTextColor="#bdbdbd"
+
+      />
+      <TextInput
+        style={styles.input}
+        name = 'email'
+        // value={email}
+        // onChangeText = {validateEmail}
+        placeholder="Адреса електронної пошти"
+        placeholderTextColor="#bdbdbd"
+
+      />
+      <View style = {styles.inputWrapp}>
+      <TextInput
+            style={styles.input}
+            name = 'password'
+            // value={password}
+            // onChangeText = {validatePassword}
+            placeholder="Пароль"
+            placeholderTextColor="#bdbdbd"
+            // secureTextEntry={!show}
+          />
+
+      </View>
+      
         </KeyboardAvoidingView>
 
         </View>
