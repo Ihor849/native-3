@@ -1,15 +1,15 @@
 // import { useFonts } from "expo-font";
 import { StyleSheet, View } from 'react-native';
-// import { StatusBar } from 'expo-status-bar';
 import RegistrationScreen from './component/RegistrationScreen';
-// import LoginScreen from "./components/LoginScreen";
-// import ProfileScreen from "./component/ProfileScreen";
+import ProfileScreen from './component/ProfileScreen';
+// import LoginScreen from "./component/LoginScreen";
+
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <RegistrationScreen/>
-      {/* <ProfileScreen/> */}
+      {/* <RegistrationScreen/> */}
+      <ProfileScreen/>
     </View>
   );
 }

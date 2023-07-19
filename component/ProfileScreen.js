@@ -11,79 +11,180 @@ import {
   ImageBackground,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { AntDesign } from "@expo/vector-icons";
+
+
 
 import BackgroundImage from "../assets/image/BackgroundImage.png";
-import User from "../assets/image/test.png";r
+import User from "../assets/image/test.png";
 
 const ProfileScreen = () => {
   return (
-    <View>
-      <ImageBackground style = {[ styles.background]} source={BackgroundImage}>
-      <StatusBar style="auto" /> 
-      </ImageBackground>
-    </View>
+    <ImageBackground style={styles.background} source={BackgroundImage}>
+      <StatusBar style="auto" />
+      <View
+        style={{
+          ...styles.main,
+          //  height: keyboardVisible ? 360 : 500,
+        }}
+      >
+        <ImageBackground style={styles.photoWrapp} source={User}>
+          <TouchableOpacity style={styles.plusBtn}>
+            <AntDesign name="pluscircleo" size={25} style={[styles.plus]} />
+          </TouchableOpacity>
+        </ImageBackground>
+        
+        <View>
+        <KeyboardAvoidingView style={styles.inputs} behavior={Platform.OS == "ios" ? "padding" : "height" } >
+      
+        </KeyboardAvoidingView>
+
+        </View>
+      </View>
+    </ImageBackground>
   );
 };
-
 export default ProfileScreen;
 
 export const styles = StyleSheet.create({
   background: {
-    gap: 160,
-    backgroundSize: "auto",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    resizeMode: "cover",
+    width: "100%",
+    height: "100%",
+
+    justifyContent: "flex-end",
   },
   main: {
-    width: "100%",
+    position: "relative",
 
-    backgroundColor: "#f5f5f5",
-    marginTop: 140,
-    paddingBottom: 8,
+    gap: 16,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 90,
+
+    backgroundColor: "#fff",
+    width: "100%",
+    height: 500,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+
+    paddingTop: 72,
+    paddingBottom: 40,
+    paddingHorizontal: 16,
   },
-  contentContainer: {
+  photoWrapp: {
+    position: "absolute",
+    top: -60,
+    transform: [{ translateX: 4 }, { translateY: 0 }],
+
+    width: 120,
+    height: 120,
+    backgroundColor: "#f6f6f6",
+    borderRadius: 16,
+  },
+  plusBtn: {
+    position: "absolute",
+    top: 70,
+    right: -10,
+  },
+  plus: {
+    color: "#FF6C00",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+  },
+  title: {
+    color: "#212121",
+    fontFamily: "Roboto",
+    fontSize: 30,
+    fontWeight: 500,
+    textAlign: "center",
+  },
+  inputs: {
+    gap: 16,
+  },
+  input: {
+    width: 343,
+    height: 50,
+    backgroundColor: "#e8e8e8",
+    borderRadius: 8,
+    padding: 16,
+    color: "#212121",
+    borderWidth: 1,
+    borderColor: "#bdbdbd",
+    textDecorationLine: "none",
+  },
+
+  errorMessage: {
+    color: "crimson",
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: 800,
+    marginHorizontal: 20,
+  },
+  alreadyHaveAccount: {
+    padding: 2,
+    textAlign: "center",
+  },
+  alreadyHaveAccountText: {
+    color: "#1B4371",
+    fontFamily: "Roboto",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  form: {
+    flex: 2,
+    flexDirection: "column",
+    gap: 16,
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  btnWrapp: {
+    flex: 1,
+    flexDirection: "column-reverse",
+    gap: 16,
+    ...Platform.select({
+      ios: {},
+      android: {},
+    }),
+  },
+  regBtn: {
+    backgroundColor: "#FF6C00",
+    height: 51,
+    width: 343,
+    borderRadius: 25,
+    padding: 16,
     alignItems: "center",
     justifyContent: "center",
   },
-  trayArrowBtn: {
-    position: "absolute",
-    right: 16,
-    top: 16,
+  regBtn__text: {
+    color: "#eee",
+    fontFamily: "Roboto",
+    fontSize: 16,
+    textAlign: "center",
   },
-  trayArrow: {
-    transform: [{ rotate: "90deg" }],
-    color: "#bdbdbd",
-  },
-  cardDescription: {
+  inputWrapp: {
     position: "relative",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 24,
   },
-  wrapp1: {
-    flex: 1,
-  },
-  wrapp2: {
-    flex: 2,
-  },
-  wrapp3: {
-    flex: 5,
-    flexDirection: "row-reverse",
-  },
-
-  flexWrapp: {
+  showPassword: {
     position: "absolute",
-    right: 0,
+    top: 15,
+    right: 16,
   },
-
-  footer: {
+  textShow: {
+    fontFamily: "Roboto",
+    color: "#1B4371",
+    fontSize: 16,
+  },
+  homeIndicator: {
     position: "absolute",
-    bottom: 0,
+    bottom: 10,
+    width: 134,
+    height: 5,
+    borderRadius: 5,
+    backgroundColor: "#212121",
+  },
+  custom: {
+    backgroundColor: "#ff2",
   },
 });
