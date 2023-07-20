@@ -25,7 +25,7 @@ const RegistrationScreen = () => {
       <View
         style={{
           ...styles.main,
-          //  height: keyboardVisible ? 360 : 500,
+         
         }}
       >
         <ImageBackground style={styles.photoWrapp} source={User}>
@@ -33,16 +33,12 @@ const RegistrationScreen = () => {
             <AntDesign name="pluscircleo" size={25} style={[styles.plus]} />
           </TouchableOpacity>
         </ImageBackground>
-        {/* <Text style={{ ...styles.title, color: time ? "crimson" : "#212121" }}>
-          {message && trime ? "Wasted" : "Реєстрація"}
-        </Text> */}
+      
         <View>
         <KeyboardAvoidingView style={styles.inputs} behavior={Platform.OS == "ios" ? "padding" : "height" } >
         <TextInput
         style={styles.input}
         name = 'login'
-        // value={login}
-        // onChangeText = {validateName}
         placeholder="Логін"
         placeholderTextColor="#bdbdbd"
 
@@ -50,8 +46,6 @@ const RegistrationScreen = () => {
       <TextInput
         style={styles.input}
         name = 'email'
-        // value={email}
-        // onChangeText = {validateEmail}
         placeholder="Адреса електронної пошти"
         placeholderTextColor="#bdbdbd"
 
@@ -60,18 +54,29 @@ const RegistrationScreen = () => {
       <TextInput
             style={styles.input}
             name = 'password'
-            // value={password}
-            // onChangeText = {validatePassword}
             placeholder="Пароль"
             placeholderTextColor="#bdbdbd"
-            // secureTextEntry={!show}
           />
 
       </View>
       
         </KeyboardAvoidingView>
+        <View style={styles.btnWrapp}>
+            <TouchableOpacity
+              style={styles.alreadyHaveAccount}
+            >
+              <Text style={styles.alreadyHaveAccountText}>
+                Вже є акаунт? Увійти
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.regBtn}>
+              <Text style={styles.regBtn__text}>Зареєструватися</Text>
+            </TouchableOpacity>
+          </View>
 
         </View>
+        <View style = {{...styles.homeIndicator}} ></View>
       </View>
     </ImageBackground>
   );
