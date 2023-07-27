@@ -102,25 +102,7 @@ const RegistrationScreen = () => {
     }
   };
 
-  // const uploadAvatarToServer = async () => {
-  //   setLoad(true);
-  //   try {
-  //     const response = await fetch(avatar);
-  //     const file = await response.blob();
-
-  //     const avatarId = Date.now().toString();
-
-  //     const storageRef = ref(storage, `avatars/${avatarId}`);
-  //     await uploadBytes(storageRef, file);
-
-  //     const avatarRef = await getDownloadURL(storageRef);
-  //     return avatarRef;
-  //   } catch (error) {
-  //     console.log("Upload avatar to server error", error.message);
-  //     setLoad(false);
-  //     setError(`Upload avatar to server error ${error.message}`);
-  //   }
-  // };
+  
 
   const submit = async () => {
     if (!isValidName) {
@@ -142,11 +124,8 @@ const RegistrationScreen = () => {
     };
     console.log(userData);
 
-    // setLoad(true);
 
     try {
-      // const avatarRef = await uploadAvatarToServer();
-
       setLogin("");
       setEmail("");
       setPassword("");
@@ -155,16 +134,9 @@ const RegistrationScreen = () => {
       setIsValidName(false);
       setIsValidEmail(false);
       setIsValidPassword(false);
-      resetData();
-
-      // dispatch(register({ ...userData,
-      //    avatar: avatarRef ,
-      //   }));
-
-      // setLoad(false);
+    
     } catch (error) {
-      // console.log("Upload avatar to server error", error.message);
-      // setLoad(false);
+      
       setError(`Upload avatar to server error ${error.message}`);
     }
   };
@@ -240,7 +212,7 @@ const RegistrationScreen = () => {
             {!keyboardVisible && (
               <View style={styles.btnWrapp}>
                 <TouchableOpacity
-                  // onPress={() => navigation.navigate("Login")}
+                
                   style={styles.alreadyHaveAccount}
                 >
                   <Text style={styles.alreadyHaveAccountText}>
