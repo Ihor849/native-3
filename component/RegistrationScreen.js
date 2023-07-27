@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,74 +12,257 @@ import {
   ImageBackground,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { AntDesign } from "@expo/vector-icons";
-
-
-
 import BackgroundImage from "../assets/image/BackgroundImage.png";
+import { AntDesign } from "@expo/vector-icons";
 import User from "../assets/image/test.png";
+// import { useNavigation } from "@react-navigation/native";
+// import { resetData } from "../../utils/dataStorage";
+// import { useDispatch } from "react-redux";
+// import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+// import { register } from "../../redux/auth/authOperations";
+// import { storage } from "../../firebase/config";
+// import avatar from 'C:/GitHub/Home-Work/test/assets/img/Avatar/av-01.jpg'
+
+// import { firebase } from "@react-native-firebase/storage";
 
 const RegistrationScreen = () => {
+
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
+  const [isValidName, setIsValidName] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [time, setTime] = useState(null);
+  
+
+  useEffect(() => {
+    if(message){
+      setTime(5)
+      setTimeout(() => {
+        setTime(null)
+      }, 5000);
+    }
+  }, [message])
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    // Clean up the listeners when the component unmounts
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const validateName = (value) => {
+    setLogin(value);
+    const pattern = /^[a-zA-Z' -]+$/;
+    if (pattern.test(value) === false) {
+      setIsValidName(false);
+    } else {
+      setIsValidName(true);
+    }
+  };
+
+  const validateEmail = (value) => {
+    setEmail(value);
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (pattern.test(value) === false) {
+      setIsValidEmail(false);
+    } else {
+      setIsValidEmail(true);
+    }
+  };
+
+  const validatePassword = (value) => {
+    setPassword(value);
+    const pattern = /^.{6,}$/;
+    if (pattern.test(value) === false) {
+      setIsValidPassword(false);
+    } else {
+      setIsValidPassword(true);
+    }
+  };
+
+  // const uploadAvatarToServer = async () => {
+  //   setLoad(true);
+  //   try {
+  //     const response = await fetch(avatar);
+  //     const file = await response.blob();
+
+  //     const avatarId = Date.now().toString();
+
+  //     const storageRef = ref(storage, `avatars/${avatarId}`);
+  //     await uploadBytes(storageRef, file);
+
+  //     const avatarRef = await getDownloadURL(storageRef);
+  //     return avatarRef;
+  //   } catch (error) {
+  //     console.log("Upload avatar to server error", error.message);
+  //     setLoad(false);
+  //     setError(`Upload avatar to server error ${error.message}`);
+  //   }
+  // };
+
+  const submit = async () => {
+    if (!isValidName) {
+      setMessage("Not valid login");
+      return;
+    }
+    if (!isValidEmail) {
+      setMessage("Not valid email");
+      return;
+    }
+    if (!isValidPassword) {
+      setMessage("Not valid password");
+      return;
+    }
+    const userData = {
+      login,
+      email,
+      password,
+    };
+    console.log(userData);
+
+    // setLoad(true);
+
+    try {
+      // const avatarRef = await uploadAvatarToServer();
+
+      setLogin("");
+      setEmail("");
+      setPassword("");
+      setShow(false);
+      setMessage("");
+      setIsValidName(false);
+      setIsValidEmail(false);
+      setIsValidPassword(false);
+      resetData();
+
+      // dispatch(register({ ...userData,
+      //    avatar: avatarRef ,
+      //   }));
+
+      // setLoad(false);
+    } catch (error) {
+      // console.log("Upload avatar to server error", error.message);
+      // setLoad(false);
+      setError(`Upload avatar to server error ${error.message}`);
+    }
+  };
+
   return (
-    <ImageBackground style={styles.background} source={BackgroundImage}>
-      <StatusBar style="auto" />
-      <View
-        style={{
-          ...styles.main,
-         
-        }}
-      >
-        <ImageBackground style={styles.photoWrapp} source={User}>
-          <TouchableOpacity style={styles.plusBtn}>
-            <AntDesign name="pluscircleo" size={25} style={[styles.plus]} />
-          </TouchableOpacity>
-        </ImageBackground>
-      
-        <View>
-        <KeyboardAvoidingView style={styles.inputs} behavior={Platform.OS == "ios" ? "padding" : "height" } >
-        <TextInput
-        style={styles.input}
-        name = 'login'
-        placeholder="Логін"
-        placeholderTextColor="#bdbdbd"
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ImageBackground style={styles.background} source={BackgroundImage}>
+        <StatusBar style="auto" />
 
-      />
-      <TextInput
-        style={styles.input}
-        name = 'email'
-        placeholder="Адреса електронної пошти"
-        placeholderTextColor="#bdbdbd"
+        <View
+          style={{
+            ...styles.main,
+            height: keyboardVisible ? 330 : 500,
+            paddingBottom: keyboardVisible ? 20 : 40,
+          }}
+        >
+          <ImageBackground style={styles.photoWrapp} source={User}>
+            <TouchableOpacity style={styles.plusBtn}>
+              <AntDesign name="pluscircleo" size={25} style={[styles.plus]} />
+            </TouchableOpacity>
+          </ImageBackground>
 
-      />
-      <View style = {styles.inputWrapp}>
-      <TextInput
-            style={styles.input}
-            name = 'password'
-            placeholder="Пароль"
-            placeholderTextColor="#bdbdbd"
-          />
+          <Text style={{...styles.title, color: time ? 'crimson' : '#212121' }}> 
+          {message && time ? 'Wasted' : 'Реєстрація'}
+          </Text>
 
-      </View>
-      
-        </KeyboardAvoidingView>
-        <View style={styles.btnWrapp}>
-            <TouchableOpacity
-              style={styles.alreadyHaveAccount}
+          <View style={styles.form}>
+            <KeyboardAvoidingView
+              style={styles.inputs}
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
             >
-              <Text style={styles.alreadyHaveAccountText}>
-                Вже є акаунт? Увійти
-              </Text>
-            </TouchableOpacity>
+              <TextInput
+                style={styles.input}
+                name="login"
+                value={login}
+                onChangeText={validateName}
+                placeholder="Логін"
+                placeholderTextColor="#bdbdbd"
+              />
+              <TextInput
+                style={styles.input}
+                name="email"
+                value={email}
+                onChangeText={validateEmail}
+                placeholder="Адреса електронної пошти"
+                placeholderTextColor="#bdbdbd"
+              />
+              <View style={styles.inputWrapp}>
+                <TextInput
+                  style={styles.input}
+                  name="password"
+                  value={password}
+                  onChangeText={validatePassword}
+                  placeholder="Пароль"
+                  placeholderTextColor="#bdbdbd"
+                  secureTextEntry={!show}
+                />
 
-            <TouchableOpacity style={styles.regBtn}>
-              <Text style={styles.regBtn__text}>Зареєструватися</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.showPassword}
+                  onPress={() => setShow(!show)}
+                >
+                  <Text style={styles.textShow}>
+                    {show ? "Приховати" : "Показати"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {message ? (
+                <Text style={styles.errorMessage}>{message}</Text>
+              ) : null}
+            </KeyboardAvoidingView>
+
+            {!keyboardVisible && (
+              <View style={styles.btnWrapp}>
+                <TouchableOpacity
+                  // onPress={() => navigation.navigate("Login")}
+                  style={styles.alreadyHaveAccount}
+                >
+                  <Text style={styles.alreadyHaveAccountText}>
+                    Вже є акаунт? Увійти
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.regBtn} onPress={submit}>
+                  <Text style={styles.regBtn__text}>Зареєстуватися</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
 
+          <View
+            style={{
+              ...styles.homeIndicator,
+              backgroundColor: keyboardVisible ? "#fff0" : "#212121",
+            }}
+          ></View>
         </View>
-        <View style = {{...styles.homeIndicator}} ></View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 };
 export default RegistrationScreen;
@@ -93,6 +277,7 @@ export const styles = StyleSheet.create({
 
     justifyContent: "flex-end",
   },
+
   main: {
     position: "relative",
 
@@ -102,7 +287,7 @@ export const styles = StyleSheet.create({
 
     backgroundColor: "#fff",
     width: "100%",
-    height: 500,
+    height: 600,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
 

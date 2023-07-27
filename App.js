@@ -8,8 +8,8 @@ import LoginScreen from "./component/LoginScreen";
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <RegistrationScreen/> */}
-      <PostsScreen/>
+      <RegistrationScreen/>
+      {/* <PostsScreen/> */}
       {/* <LoginScreen/> */}
     </View>
   );
