@@ -47,21 +47,8 @@ const CreatePostsScreen =() => {
     const [message, setMessage] = useState('')
     const [keyboardVisible, setKeyboardVisible] = useState(false);
     const [loading, setLoading] = useState(false);
-    // const [mode, setMode] = useState(lightTheme)
     const navigation = useNavigation();
-    // const {userId, login} = useAuth()
-
-
-    // const theme = useSelector(getTheme)
-
-//theme
-    // const toggleMode = () => {
-    //   setMode(theme === 'light' ? lightTheme : darkTheme);
-    // };
-    // useEffect(() => {
-    //   toggleMode()
-    // }, [theme])
-
+    
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
           'keyboardDidShow',
@@ -95,7 +82,6 @@ const CreatePostsScreen =() => {
         
         if (snap) {
             let { uri } = await snap.takePictureAsync()
-            // await MediaLibrary.createAssetAsync(uri);
             setPhoto(uri) 
 
             let locationUser =
@@ -114,58 +100,7 @@ const CreatePostsScreen =() => {
 
     }
 
-
-
-    // const uploadPhotoToServer = async () => {
-    //   setLoading(true);
-    //     try {
-    //       const response = await fetch(photo);
-    //       const file = await response.blob();
-    //       const imgId = Date.now().toString();
-    
-    //       const storageRef = ref(storage, `images/${imgId}`);
-    //       await uploadBytes(storageRef, file);
-         
-    
-    //       const urlRef = await getDownloadURL(storageRef);
-    //       setLoading(false);
-    //       return urlRef;
-    //     } catch (error) {
-    //       console.error(error);
-    //       setLoading(false);
-    //     }
-    //   };
-
-    //   const uploadPostToServer = async () => {
-    //     setLoading(true);
-    //     try {
-    //       const uploadPhoto = await uploadPhotoToServer();//Add photo so storage/images
-    //       const collectionRef = doc(collection(db, "posts"));
-    
-    //       await setDoc(collectionRef, {
-    //         photo,
-    //         location:[ gps.latitude || 32, gps.longitude || 50],
-    //         postName: naming,
-    //         placeName: location,
-    //         comments: 0,
-    //         userId,
-    //         userName : login,
-    //         timestamp: serverTimestamp(),
-    //       });
-    
-    //       Toast.show("Post uploaded", {
-    //         duration: 5000,
-    //         position: 50,
-    //       });
-    //       setLoading(false);
-    
         
-    //     } catch (error) {
-    //       console.log("upload post", error);
-    //       setLoading(false);
-    //     }
-    //   };
-      
 
     const reset = () => {
         setId(null)
@@ -221,10 +156,9 @@ const CreatePostsScreen =() => {
             gps,
         }
          console.log(data)
-        // uploadPostToServer();
+      
          
          addData(data); // Write data to dataStorage.js
-        //  navigation.navigate('Posts', {data})
          navigation.navigate('Posts', {data})
          reset()
     }
@@ -312,7 +246,7 @@ const CreatePostsScreen =() => {
                 </TouchableOpacity>
             </ScrollView>
 
-            {/* {loading && <Loader/>}  */}
+       
 
             {!keyboardVisible && <View style = {[postStyles.footer]}>
             <TouchableOpacity

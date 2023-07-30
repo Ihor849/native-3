@@ -16,16 +16,12 @@ import { AntDesign } from '@expo/vector-icons';
 import AvImage0 from "../../assets/image/userAv.png";
 import { useNavigation } from "@react-navigation/native";
 import { dataComments } from "../../utils/dataStorage";
-// import { getTheme, useAuth } from "../../redux/auth/authSelectors";
 
-import { useEffect, useState } from "react";
-// import {  addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore";
+import {useState } from "react";
 
-import moment from "moment";
-// import { lightTheme, darkTheme } from "../../utils/themes";
-// import { useSelector } from "react-redux";
-// import ConfirmPopup from "../ConfirmPopup/ConfirmPopup";
-// import { db } from "../../firebase/config";
+
+
+
 
 
 
@@ -33,29 +29,10 @@ const CommentsScreen =({route}) => {
     const {postId, photo} = route.params;
 
     const navigation = useNavigation();
-    // const { login }= useAuth() 
     const [comment, setComment] = useState('')
     const [allComments, setAllComments] = useState(dataComments)
     const [isValidComment, setIsValidComment] = useState(false)
     const [message, setMessage] = useState('');
-
-
-    // const [loading, setLoading] = useState(false);
-    // const [mode, setMode] = useState(lightTheme)
-    // const [showConfirm, setShowConfirm] = useState(false);
-
-
-
-
-    // const theme = useSelector(getTheme)
-
-    // Theme
-//   const toggleMode = () => {
-//     setMode(theme === 'light' ? lightTheme : darkTheme);
-//   };
-//   useEffect(() => {
-//     toggleMode()
-//   }, [theme])
   
 
     const validateComment = (value) => {
@@ -81,92 +58,11 @@ const CommentsScreen =({route}) => {
             userName: login,
             timestamp: serverTimestamp()
           });
-        
-        //   setComment('');
+                
           Keyboard.dismiss()
-
-        // db.firestore()
-        //   .collection('posts')  
-        //   .doc(postId)
-        //   .collection('comments')  
-        //   .add({comment, userName: login})
 
         };
 
-        // const deleteComment = async (commentId) => {
-            
-
-        //     try {
-        //       setLoading(true);
-        //       // Create a reference to the comment document
-        //       const commentRef = doc(db, `posts/${postId}/comments/
-        //       ETNWD3cHgAf1RO4euqyk`);//${commentId}
-          
-        //       // Delete the comment document from the Firestore
-        //       await deleteDoc(commentRef);
-          
-        //       // After successful deletion, update the comments state to reflect the changes
-        //     //   setAllComments((prevComments) =>
-        //     //     prevComments.filter((comment) => comment.id !== commentId)
-        //     //   );
-          
-        //     //   setLoading(false);
-        //     } catch (error) {
-        //       console.error('Error deleting comment:', error);
-        //     //   setLoading(false);
-        //     }
-        //   };
-
-    
-        // const getAllComments = async (postId) => {
-
-        //     setLoading(true);
-
-        //     try {
-        //         const commentsRef = collection(db, `posts/${postId}/comments`);
-        //         const querySnapshot = await getDocs(commentsRef);
-        //         const comments = []  
-    
-        //         querySnapshot.forEach((doc) => {
-        //             comments.push(doc.data());
-        //             // console.log('data:', doc.data());
-        //         });
-        //         setTimeout(() => {
-        //             setAllComments(comments);
-        //           }, 0);
-          
-        //       setLoading(false);
-        //     } catch (error) {
-        //       console.log('Error fetching comments:', error);
-        //       setLoading(false);
-        //     }
-
-
-        //   };    
-
-        //   useEffect(() => {    
-        //     const intervalId = setInterval(() => {
-        //         getAllComments(postId);
-        //       }, 5000);
-            
-        //       return () => {
-        //         clearInterval(intervalId);
-        //       };    
-        //  }, [postId]);  
-
-         //confirm
-        //  const handleConfirm = () => {
-        //     // Do something when the user confirms the action
-        //     console.log('Confirmed!');
-        //     setShowConfirm(false);
-        //   };
-        
-        //   const handleCancel = () => {
-        //     // Do something when the user cancels the action
-        //     console.log('Cancelled!');
-        //     setShowConfirm(false);
-        //   };
-    
 
     return (
         <View style = {[regStyles.background, postStyles.background]}>
@@ -175,7 +71,6 @@ const CommentsScreen =({route}) => {
         <View style = {[creStyles.postsCreate, styles.container]}>
         <View style={postStyles.titleWrapp}>
             <Text 
-            // onPress={ deleteComment}
             style={[postStyles.title]}>
             Коментарі
             </Text>
@@ -204,8 +99,7 @@ const CommentsScreen =({route}) => {
              
                  style = {[styles.commentText]}>{item.comment}</Text>
                 <Text style = {styles.createdAt}>
-                  {/* {moment(item.timestamp.toDate()).format('MMMM/DD/YYYY hh:mm a')} */}
-                  {item.data}
+                 {item.data}
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
@@ -221,14 +115,7 @@ const CommentsScreen =({route}) => {
                   )} />  }
         </View>
 
-        {/* <ConfirmPopup
-        visible={showConfirm}
-        message="Are you sure you want to proceed?"
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-        commentId ={allComments}
-      /> */}
-              
+                      
         {message ?  <Text style={{...regStyles.errorMessage, }}>{message}</Text>         
                  :  null}
 

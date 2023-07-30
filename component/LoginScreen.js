@@ -126,7 +126,7 @@ const LoginScreen = () => {
           }}
         >
           <Text 
-          onPress={()=> navigation.navigate("CreatePost")}
+          // onPress={()=> navigation.navigate("CreatePost")}
             style={{ ...regStyles.title, color: time ? "crimson" : "#212121" }}
           >
             {message && time ? "Wasted" : "Увійти"}
