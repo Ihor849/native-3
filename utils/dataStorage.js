@@ -62,3 +62,13 @@ gps:{
       },
 }
 
+export const dataComments = [{
+  comment: "GGGGGGGGG",
+  data: "10.10.2020"
+
+},
+{
+  comment: "WWWWWWWWW",
+  data: "12.12.2022"
+
+}]
