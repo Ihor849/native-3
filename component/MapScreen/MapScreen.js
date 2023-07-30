@@ -6,9 +6,11 @@ const MapScreen = ({ route }) => {
   let y 
   const { item } = route.params;
 
+  console.log( item.gps.latitude);
+
   if(item.location){
-     x = item.location[0]
-     y = item.location[1]
+     x = item.gps.latitude || 50.515339
+     y = item.gps.longitude || 30.602185
   }
   else {
     x = 50.515339
@@ -22,8 +24,6 @@ const MapScreen = ({ route }) => {
      <View style={styles.map}>
       <MapView  style={{ flex: 1,}}
       initialRegion={{
-        // longitude: 30.602185,
-        // latitude: 50.515339,
         longitude: y,
         latitude: x,
         longitudeDelta:  0.1,

@@ -13,14 +13,14 @@ import { styles as regStyles } from "../RegistrationScreen";
 import { styles as postStyles } from "../PostsScreen/PostsScreen";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { getData, resetData, gpsDefault, getPlaces } from "../../utils/dataStorage";
+import { getData, resetData, gpsDefault, getPlaces, publishedData } from "../../utils/dataStorage";
 
 const item = gpsDefault
 
 
 const ProfileScreen =() => {
     
-    const [posts, setPosts] = useState( getPlaces())
+    const [posts, setPosts] = useState( getData())
     const navigation = useNavigation();
   
 
@@ -28,8 +28,8 @@ const ProfileScreen =() => {
 
 
 useEffect(() => {
-    setPosts(getPlaces())
-      }, [])
+    setPosts(getData())
+      }, [publishedData])
 
     
     return (
