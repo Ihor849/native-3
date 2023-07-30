@@ -25,15 +25,17 @@ import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import BgImage2 from "../../assets/image/react-js-native.jpg";
 import {addData } from "../../utils/dataStorage";
-// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { db, storage } from "../../firebase/config";
-// import {  collection, doc, serverTimestamp, setDoc, } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../../firebase/config";
+import {  collection, doc, serverTimestamp, setDoc, } from "firebase/firestore";
 // import { getTheme, useAuth } from "../../redux/auth/authSelectors";
 import Toast from "react-native-root-toast";
 import { gpsDefault } from "../../utils/dataStorage";
 // import { lightTheme, darkTheme  } from "../../utils/themes";
 // import { useSelector } from "react-redux";
+import { useAuth } from "../../redux/auth/authSelectors";
 // import Loader from "../Loader/Loader";
+
 
 const CreatePostsScreen =() => {
     const [snap, setsnap] = useState(null)
@@ -46,9 +48,11 @@ const CreatePostsScreen =() => {
     const [isValidLocation, setIsValidLocation] = useState(false)
     const [message, setMessage] = useState('')
     const [keyboardVisible, setKeyboardVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const navigation = useNavigation();
     
+    const navigation = useNavigation();
+    const {userId, login} = useAuth()
+
+
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
           'keyboardDidShow',
@@ -82,6 +86,7 @@ const CreatePostsScreen =() => {
         
         if (snap) {
             let { uri } = await snap.takePictureAsync()
+            // await MediaLibrary.createAssetAsync(uri);
             setPhoto(uri) 
 
             let locationUser =
@@ -100,7 +105,58 @@ const CreatePostsScreen =() => {
 
     }
 
+
+
+    const uploadPhotoToServer = async () => {
+      
+        try {
+          const response = await fetch(photo);
+          const file = await response.blob();
+          const imgId = Date.now().toString();
+    
+          const storageRef = ref(storage, `images/${imgId}`);
+          await uploadBytes(storageRef, file);
+         
+    
+          const urlRef = await getDownloadURL(storageRef);
+          
+          return urlRef;
+        } catch (error) {
+          console.error(error);
+          
+        }
+      };
+
+      const uploadPostToServer = async () => {
+      
+        try {
+          const uploadPhoto = await uploadPhotoToServer();//Add photo so storage/images
+          const collectionRef = doc(collection(db, "posts"));
+    
+          await setDoc(collectionRef, {
+            photo,
+            location:[ gps.latitude || 32, gps.longitude || 50],
+            postName: naming,
+            placeName: location,
+            comments: 0,
+            userId,
+            userName : login,
+            timestamp: serverTimestamp(),
+          });
+    
+          Toast.show("Post uploaded", {
+            duration: 5000,
+            position: 50,
+          });
+          
+    
         
+        } catch (error) {
+          console.log("upload post", error);
+          
+        }
+      };
+      
 
     const reset = () => {
         setId(null)
@@ -155,10 +211,11 @@ const CreatePostsScreen =() => {
             location,
             gps,
         }
-         console.log(data)
-      
+        //  console.log(data)
+        uploadPostToServer();
          
          addData(data); // Write data to dataStorage.js
+        //  navigation.navigate('Posts', {data})
          navigation.navigate('Posts', {data})
          reset()
     }
@@ -246,7 +303,7 @@ const CreatePostsScreen =() => {
                 </TouchableOpacity>
             </ScrollView>
 
-       
+          
 
             {!keyboardVisible && <View style = {[postStyles.footer]}>
             <TouchableOpacity

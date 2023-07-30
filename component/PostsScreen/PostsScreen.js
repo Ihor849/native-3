@@ -14,23 +14,44 @@ import {
   Feather,
   FontAwesome5,
 } from "@expo/vector-icons";
+import {  logOut } from "../../redux/auth/authOperations";
+import { db } from "../../firebase/config";
+import { collection,  onSnapshot, query} from "firebase/firestore";
 
 import { styles as regStyles } from "../RegistrationScreen";
 
 import User from "../../assets/image/test.png";
 import { useNavigation } from "@react-navigation/native";
 import { getData, resetData} from "../../utils/dataStorage";
+import { useAuth } from "../../redux/auth/authSelectors";
+import { useDispatch} from "react-redux";
 
 
 
-const PostsScreen = () => {
-  const [posts, setPosts] = useState(getData())
+const PostsScreen = ({route}) => {
+  const [posts, setPosts] = useState([])
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { email, login } = useAuth();
 
-  // useEffect(() => {
-  // setPosts(getData())
 
-  //   }, [])
+  const getAllPosts = async () => {
+
+
+    try {
+      const dbRef = collection(db, "posts");
+      const searchQuery = query(dbRef);
+      onSnapshot(searchQuery, (docSnap) =>
+        setPosts(docSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))));
+  
+    } catch (error) {
+      console.log('Error fetching comments:', error);
+     
+    }
+  }
+  useEffect(() => {
+    getAllPosts();
+  }, [route.params]);
   
   return (
     <View
@@ -53,7 +74,7 @@ const PostsScreen = () => {
           <TouchableOpacity
             onPress={()=> {
               resetData()
-              navigation.navigate("Login")}}
+              dispatch(logOut())}}
             style={styles.trayArrowBtn}
             
           >
@@ -75,10 +96,10 @@ const PostsScreen = () => {
             </View>
             <View style={styles.userWrapp}>
               <Text style={[styles.userName]}>
-              Natali Romanova
+              {login}
               </Text>
               <Text style={[styles.userEmail]}>
-              email@example.com
+              {email}
               </Text>
             </View>
           </View>
@@ -89,7 +110,7 @@ const PostsScreen = () => {
 
         <View style={styles.card}  key={item.id}>
         <Image source={{uri: item.photo}}  style={styles.photoFrame} />
-        <Text style={[styles.cardText]}>{item.naming}</Text>
+        <Text style={[styles.cardText]}>{item.postName}</Text>
         <View style={styles.cardDescription}>
             <View style={styles.flexWrapp} >
             <FontAwesome5
@@ -97,14 +118,14 @@ const PostsScreen = () => {
               postId: item.id,
               photo: item.photo, })}
               style={styles.iconComment} name="comment" size={24} color="#bdbdbd" />
-            <Text style={[styles.cardComment]}>0</Text>
+            <Text style={[styles.cardComment]}>{item.comments}</Text>
             </View>
 
         <View style={styles.flexWrapp}>
         <Feather
           onPress={() => navigation.navigate("Map",{item})}
           name="map-pin" size={24} color="#bdbdbd" />
-        <Text style={[styles.cardLocation]}>{item.location}</Text>
+        <Text style={[styles.cardLocation]}>{item.placeName}</Text>
         </View>
         </View>
         </View> 

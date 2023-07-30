@@ -18,10 +18,10 @@ import { AntDesign } from "@expo/vector-icons";
 import User from "../assets/image/test.png";
 import { useNavigation } from "@react-navigation/native";
 // import { resetData } from "../../utils/dataStorage";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 // import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-// import { register } from "../../redux/auth/authOperations";
-// import { storage } from "../../firebase/config";
+import { register } from "../redux/auth/authOperations";
+import { storage } from "../firebase/config";
 // import avatar from 'C:/GitHub/Home-Work/test/assets/img/Avatar/av-01.jpg'
 
 // import { firebase } from "@react-native-firebase/storage";
@@ -36,11 +36,13 @@ const RegistrationScreen = () => {
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+
   const [error, setError] = useState(null);
 
   const [time, setTime] = useState(null);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (message) {
@@ -121,20 +123,32 @@ const RegistrationScreen = () => {
       email,
       password,
     };
-    
-    console.log(userData);
+    try {
+      // const avatarRef = await uploadAvatarToServer();
 
-    setLogin("");
-    setEmail("");
-    setPassword("");
-    setShow(false);
-    setMessage("");
-    setIsValidName(false);
-    setIsValidEmail(false);
-    setIsValidPassword(false);
+      setLogin('')
+      setEmail('')
+      setPassword('')
+      setShow(false)
+      setMessage('')
+      setIsValidName(false)
+      setIsValidEmail(false)
+      setIsValidPassword(false)
+      // resetData()
 
-  
-    navigation.navigate("Home")
+      dispatch(register({ ...userData,
+        //  avatar: avatarRef ,
+        }));     
+
+      
+    } catch (error) {
+      console.log("Upload avatar to server error", error.message);
+      
+      setError(`Upload avatar to server error ${error.message}`);
+    }
+    // console.log(userData);
+
+    // navigation.navigate("Home")
   };
 
   return (
