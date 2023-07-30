@@ -14,6 +14,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
 import { styles as regStyles } from "./RegistrationScreen";
+import { useNavigation } from "@react-navigation/native";
 
 
 const LoginScreen = () => {
@@ -26,6 +27,8 @@ const LoginScreen = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const [time, setTime] = useState(null);
+
+  const navigation = useNavigation();
  
 
   useEffect(() => {
@@ -102,6 +105,7 @@ const LoginScreen = () => {
     setIsValidPassword(false);
   
     console.log(userData);
+    navigation.navigate("Home")
   };
 
   return (
@@ -121,7 +125,8 @@ const LoginScreen = () => {
             paddingBottom: keyboardVisible ? 8 : 60,
           }}
         >
-          <Text
+          <Text 
+          onPress={()=> navigation.navigate("CreatePost")}
             style={{ ...regStyles.title, color: time ? "crimson" : "#212121" }}
           >
             {message && time ? "Wasted" : "Увійти"}

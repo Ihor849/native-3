@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   Text,
   StyleSheet,
@@ -15,7 +16,7 @@ import { StatusBar } from "expo-status-bar";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
 import { AntDesign } from "@expo/vector-icons";
 import User from "../assets/image/test.png";
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 // import { resetData } from "../../utils/dataStorage";
 // import { useDispatch } from "react-redux";
 // import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -26,7 +27,6 @@ import User from "../assets/image/test.png";
 // import { firebase } from "@react-native-firebase/storage";
 
 const RegistrationScreen = () => {
-
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,16 +39,17 @@ const RegistrationScreen = () => {
   const [error, setError] = useState(null);
 
   const [time, setTime] = useState(null);
-  
+
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if(message){
-      setTime(5)
+    if (message) {
+      setTime(5);
       setTimeout(() => {
-        setTime(null)
+        setTime(null);
       }, 5000);
     }
-  }, [message])
+  }, [message]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -102,8 +103,6 @@ const RegistrationScreen = () => {
     }
   };
 
-  
-
   const submit = async () => {
     if (!isValidName) {
       setMessage("Not valid login");
@@ -122,23 +121,20 @@ const RegistrationScreen = () => {
       email,
       password,
     };
+    
     console.log(userData);
 
+    setLogin("");
+    setEmail("");
+    setPassword("");
+    setShow(false);
+    setMessage("");
+    setIsValidName(false);
+    setIsValidEmail(false);
+    setIsValidPassword(false);
 
-    try {
-      setLogin("");
-      setEmail("");
-      setPassword("");
-      setShow(false);
-      setMessage("");
-      setIsValidName(false);
-      setIsValidEmail(false);
-      setIsValidPassword(false);
-    
-    } catch (error) {
-      
-      setError(`Upload avatar to server error ${error.message}`);
-    }
+  
+    navigation.navigate("Home")
   };
 
   return (
@@ -159,8 +155,10 @@ const RegistrationScreen = () => {
             </TouchableOpacity>
           </ImageBackground>
 
-          <Text style={{...styles.title, color: time ? 'crimson' : '#212121' }}> 
-          {message && time ? 'Wasted' : 'Реєстрація'}
+          <Text
+            style={{ ...styles.title, color: time ? "crimson" : "#212121" }}
+          >
+            {message && time ? "Wasted" : "Реєстрація"}
           </Text>
 
           <View style={styles.form}>
@@ -212,13 +210,14 @@ const RegistrationScreen = () => {
             {!keyboardVisible && (
               <View style={styles.btnWrapp}>
                 <TouchableOpacity
-                
+                  onPress={() => navigation.navigate("Login")}
                   style={styles.alreadyHaveAccount}
                 >
                   <Text style={styles.alreadyHaveAccountText}>
                     Вже є акаунт? Увійти
                   </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity style={styles.regBtn} onPress={submit}>
                   <Text style={styles.regBtn__text}>Зареєстуватися</Text>
                 </TouchableOpacity>

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -14,11 +15,22 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 
-import { styles as regStyles } from "./RegistrationScreen";
+import { styles as regStyles } from "../RegistrationScreen";
 
-import User from "../assets/image/test.png";
+import User from "../../assets/image/test.png";
+import { useNavigation } from "@react-navigation/native";
+import { getData, resetData} from "../../utils/dataStorage";
+
+
 
 const PostsScreen = () => {
+  const [posts, setPosts] = useState(getData())
+  const navigation = useNavigation();
+
+  // useEffect(() => {
+  // setPosts(getData())
+
+  //   }, [])
   
   return (
     <View
@@ -32,14 +44,18 @@ const PostsScreen = () => {
       <View style={[styles.postsScreen]}>
         <View style={styles.titleWrapp}>
           <Text
+          onPress={getData}
             style={[styles.title]}
           >
             Публікації
           </Text>
           
           <TouchableOpacity
-            
+            onPress={()=> {
+              resetData()
+              navigation.navigate("Login")}}
             style={styles.trayArrowBtn}
+            
           >
             <MaterialCommunityIcons
               style={styles.trayArrow}
@@ -48,7 +64,7 @@ const PostsScreen = () => {
             />
           </TouchableOpacity>
         </View>
-
+        
         <View
           style={[styles.main]}
           contentContainerStyle={styles.contentContainer}
@@ -66,16 +82,49 @@ const PostsScreen = () => {
               </Text>
             </View>
           </View>
+          {posts &&
+        <FlatList style ={{marginBottom:260,}}
+          data={posts} keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => (
+
+        <View style={styles.card}  key={item.id}>
+        <Image source={{uri: item.photo}}  style={styles.photoFrame} />
+        <Text style={[styles.cardText]}>{item.naming}</Text>
+        <View style={styles.cardDescription}>
+            <View style={styles.flexWrapp} >
+            <FontAwesome5
+              onPress={() => navigation.navigate("Comments", {
+              postId: item.id,
+              photo: item.photo, })}
+              style={styles.iconComment} name="comment" size={24} color="#bdbdbd" />
+            <Text style={[styles.cardComment]}>0</Text>
+            </View>
+
+        <View style={styles.flexWrapp}>
+        <Feather
+          onPress={() => navigation.navigate("Map",{item})}
+          name="map-pin" size={24} color="#bdbdbd" />
+        <Text style={[styles.cardLocation]}>{item.location}</Text>
+        </View>
+        </View>
+        </View> 
+
+        )} /> }
         </View>
 
         <View style={[styles.footer]}>
           <TouchableOpacity style={[styles.icon]}>
+            
             <Feather style={styles.icon} name="grid" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addBtn}>
+          <TouchableOpacity 
+          onPress={() => navigation.navigate("CreatePost")}
+          style={styles.addBtn}>
             <AntDesign name="plus" size={14} color="#eee" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.icon}>
+          <TouchableOpacity
+          onPress={() => navigation.navigate("Profile")}
+           style={styles.icon}>
             <Feather style={styles.icon} name="user" size={24} />
           </TouchableOpacity>
 
