@@ -5,7 +5,7 @@ import CreatePostsScreen from "../CreatePostsScreen/CreatePostsScreen";
 import ProfileScreen from "../ProfileScreen/ProfileScreen";
 import CommentsScreen from "../CommentsScreen/CommentsScreen";
 import MapScreen from "../MapScreen/MapScreen";
-// import Loader from "../Loader/Loader";
+
 
 
 export default function Home() {
