@@ -6,11 +6,10 @@ const MapScreen = ({ route }) => {
   let y 
   const { item } = route.params;
 
-  console.log( item.gps.latitude);
 
   if(item.location){
-     x = item.gps.latitude || 50.515339
-     y = item.gps.longitude || 30.602185
+     x = item.location[0] 
+     y = item.location[1] 
   }
   else {
     x = 50.515339
