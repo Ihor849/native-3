@@ -9,7 +9,7 @@ import RegistrationScreen from '../component/RegistrationScreen';
 import { useDispatch} from 'react-redux';
 import { authStateChangeUser } from '../redux/auth/authOperations';
 import { useAuth } from '../redux/auth/authSelectors';
-import Home from '../component/Home/home';
+import Home from '../component/Home/Home';
 
 
 

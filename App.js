@@ -1,7 +1,7 @@
 import { useFonts } from "expo-font";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import Main from "./Main/main";
+import Main from "./Main/Main";
 
 
 
