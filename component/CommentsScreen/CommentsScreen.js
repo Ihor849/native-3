@@ -21,12 +21,16 @@ import moment from "moment";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../redux/auth/authSelectors";
+import ConfirmPopup from "../ConfirmPopup/ConfirmPopup";
 
 const CommentsScreen = ({ route }) => {
   const { postId, photo } = route.params;
@@ -35,8 +39,10 @@ const CommentsScreen = ({ route }) => {
   const { login } = useAuth();
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
+  const [commentId, setCommentId] = useState(null)
   const [isValidComment, setIsValidComment] = useState(false);
   const [message, setMessage] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const validateComment = (value) => {
     setComment(value);
@@ -49,20 +55,86 @@ const CommentsScreen = ({ route }) => {
   };
 
   const createComment = async () => {
-    if (!isValidComment) {
-      setMessage("Comment shouldn`t be blank");
-      return;
+      
+
+    if(!isValidComment){
+        setMessage('Comment shouldn`t be blank')
+        return
+      }
+      validateComment()
+
+      const commentData = {
+        comment,
+        userName: login,
+        timestamp: serverTimestamp(),
+      };
+    
+      const commentRef = await addDoc(
+        collection(db, `posts/${postId}/comments`),
+        commentData
+      );
+    
+      // Get the newly generated commentId
+      const newCommentId = commentRef.id;
+    
+      // Now, update the commentRef with the newCommentId
+      await updateDoc(commentRef, { commentId: newCommentId });
+    
+      setComment('');
+      Keyboard.dismiss()
+
+    };
+
+    const getCommentsCount = async () => {
+
+      try {
+      
+        const dbRef = collection(db, `posts/${postId}/comments`);
+    // console.log(dbRef)
+          // Set up a real-time listener for the comments collection
+          onSnapshot(dbRef, (querySnapshot) => {
+            // Get the number of comments in the collection (number of documents)
+            const count = querySnapshot.size;
+      
+            // console.log('Number of comments:', count);
+          
+    
+            const collectionRef = doc(db, "posts", postId)
+            // console.log(collectionRef)
+             updateDoc(collectionRef, {
+                comments: count,
+              });
+    
+          });
+        }
+      
+      catch (error) {
+        console.log('Error fetching comments:', error);
+       
+      }
+        }
+    
+        useEffect(() => {    
+          getCommentsCount()
+    }, [postId, commentId]);  //commentId
+
+  const deleteComment = async (id) => {
+
+    try {   
+      // Create a reference to the comment document
+      const commentRef = doc(db, `posts/${postId}/comments/${id}`);//${commentId}
+      console.log('commentRef.path',commentRef.path)
+      console.log(id)
+
+      // Delete the comment document from the Firestore
+      await deleteDoc(commentRef);        
+      // After successful deletion, update the comments state to reflect the changes
+      setAllComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId)
+      );             
+    } catch (error) {
+      console.error('Error deleting comment:', error);
     }
-    validateComment();
-
-    await addDoc(collection(db, `posts/${postId}/comments`), {
-      comment: comment,
-      userName: login,
-      timestamp: serverTimestamp(),
-    });
-
-    setComment("");
-    Keyboard.dismiss();
   };
 
   const getAllComments = async (postId) => {
@@ -88,6 +160,19 @@ const CommentsScreen = ({ route }) => {
     getAllComments(postId);
   },[allComments])
     
+  //confirm
+  const handleConfirm = () => {
+    // Do something when the user confirms the action
+    deleteComment(commentId)
+    console.log('Confirmed!');
+    setShowConfirm(false);
+  };
+
+  const handleCancel = () => {
+    // Do something when the user cancels the action
+    console.log('Cancelled!');
+    setShowConfirm(false);
+  };
  
 
   return (
@@ -136,21 +221,29 @@ const CommentsScreen = ({ route }) => {
                         "MMMM/DD/YYYY hh:mm a"
                       )}
                     </Text>
-                    <TouchableOpacity style={[styles.deleteBtn]}>
-                      <AntDesign
-                        style={[styles.icoDelete]}
-                        name="delete"
-                        size={16}
-                        color="#bdbdbd"
-                      />
-                    </TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={() => {
+                    setShowConfirm(true) 
+                    setCommentId(item.commentId); // Pass item.commentId to handleConfirm
+                  }}
+                  style={[ styles.deleteBtn]}>
+                 <AntDesign 
+                   style={[styles.icoDelete]}
+                   name="delete" size={16} color="#bdbdbd" />
+            </TouchableOpacity>
                   </View>
                 </View>
               )}
             />
           )}
         </View>
-
+        <ConfirmPopup
+        visible={showConfirm}
+        message="Are you sure you want to proceed?"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        commentId ={allComments}
+      />
         {message ? (
           <Text style={{ ...regStyles.errorMessage }}>{message}</Text>
         ) : null}

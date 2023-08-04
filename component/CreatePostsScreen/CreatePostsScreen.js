@@ -115,6 +115,7 @@ const CreatePostsScreen =() => {
           const imgId = Date.now().toString();
     
           const storageRef = ref(storage, `images/${imgId}`);
+        
           await uploadBytes(storageRef, file);
          
     
