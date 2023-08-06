@@ -27,13 +27,13 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import {
   getData,
   resetData,
-  gpsDefault,
-  getPlaces,
-  publishedData,
+  // gpsDefault,
+  // getPlaces,
+  // publishedData,
 } from "../../utils/dataStorage";
 import { useAuth } from "../../redux/auth/authSelectors";
 
-const item = gpsDefault;
+// const item = gpsDefault;
 
 const ProfileScreen = ({route}) => {
 

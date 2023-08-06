@@ -21,7 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 // import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { register } from "../redux/auth/authOperations";
-import { storage } from "../firebase/config";
+// import { storage } from "../firebase/config";
 // import avatar from 'C:/GitHub/Home-Work/test/assets/img/Avatar/av-01.jpg'
 
 // import { firebase } from "@react-native-firebase/storage";
@@ -145,6 +145,7 @@ const RegistrationScreen = () => {
       console.log("Upload avatar to server error", error.message);
       
       setError(`Upload avatar to server error ${error.message}`);
+      
     }
     // console.log(userData);
 

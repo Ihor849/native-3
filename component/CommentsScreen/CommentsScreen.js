@@ -15,7 +15,7 @@ import { styles as creStyles } from "../CreatePostsScreen/CreatePostsScreen";
 import { AntDesign } from "@expo/vector-icons";
 import AvImage0 from "../../assets/image/userAv.png";
 import { useNavigation } from "@react-navigation/native";
-import { dataComments } from "../../utils/dataStorage";
+// import { dataComments } from "../../utils/dataStorage";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import {
