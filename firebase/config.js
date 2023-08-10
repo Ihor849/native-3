@@ -26,12 +26,12 @@ const firebaseConfig = {
   // messagingSenderId: "731754440015",
   // appId: "1:731754440015:web:c485cb6573fe555161513a"
   //   measurementId: "G-1EMZNXNNCB"
-  apiKey: "AIzaSyCHWQKPpBRNHd3CK9d24-AQO6MpdrZ9keM",
-  authDomain: "native4-a2e33.firebaseapp.com",
-  projectId: "native4-a2e33",
-  storageBucket: "native4-a2e33.appspot.com",
-  messagingSenderId: "925610788780",
-  appId: "1:925610788780:web:42271113e2366b9f2a9c09",
+  apiKey: "AIzaSyB4AC_ElL6RZPyU8nsYEl6RFvphVaE0CSA",
+  authDomain: "native-5-5b5d5.firebaseapp.com",
+  projectId: "native-5-5b5d5",
+  storageBucket: "native-5-5b5d5.appspot.com",
+  messagingSenderId: "859084897948",
+  appId: "1:859084897948:web:30894141e8c8f08eb2b759"
 };
 
 // Initialize Firebase
